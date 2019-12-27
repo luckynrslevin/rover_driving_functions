@@ -1,5 +1,6 @@
-# rover_driving_functions
+# rover_drivingcontrol
 
+## README
 Test program to control steering servo and throttle ESC (electronic speed control)
 via hardware pwm of raspberry pi.
 Steering servo has to be connected to GPIO BCM12, which is physical pin 32 + ground.
@@ -20,3 +21,6 @@ control the throttle with:
     
     a key to increase speed
     y key to decrease speed
+
+## Compile program
+    gcc -o drivingcontrol drivingcontrol.c -l bcm2835

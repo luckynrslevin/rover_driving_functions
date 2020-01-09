@@ -23,10 +23,11 @@
 // control the throttle with:
 //    a key to increase speed
 //    y key to decrease speed
+//    b key to brake
 //
 // Author: luckynrslevin
-// Date: 25.12.2019
-// Version: 0.1
+// Date: 09.01.2020
+// Version: 0.2
 // License: MIT
 //
 // ************************************************************************************
@@ -34,6 +35,7 @@
 char getch();
 int setSteering(int data);
 int setThrottle(int data);
+int braking(int data);
 
 int main(int argc, char **argv)
 {
@@ -96,6 +98,8 @@ int main(int argc, char **argv)
          case 121: throttle_data = throttle_data - 1;
                    throttle_data = setThrottle(throttle_data);
                    break;
+         case 98:  throttle_data = braking(throttle_data);
+                   break;
          case 113: bcm2835_close();
                    return 0;
        }
@@ -129,6 +133,19 @@ int setThrottle(int i) {
   }
   printf("New throttle value: %d\n", i);
   bcm2835_pwm_set_data(1, i);
+  return i;
+}
+
+// set PWM steering value
+int braking(int i) {
+  // limit PWM min/max values to avoid breaking the servo (120/180).
+  if (i > 150) {
+    i = 100; // set to 1 ms for braking
+  } else {
+    i = 150; // reset to 1,5 ms
+  }
+  printf("Braking, set value to: %d\n", i);
+  bcm2835_pwm_set_data(0, i);
   return i;
 }
 

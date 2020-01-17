@@ -98,7 +98,8 @@ int main(int argc, char **argv)
          case 121: throttle_data = throttle_data - 1;
                    throttle_data = setThrottle(throttle_data);
                    break;
-         case 98:  throttle_data = braking(throttle_data);
+         case 98:  printf("braking 1");
+                   throttle_data = braking(throttle_data);
                    break;
          case 113: bcm2835_close();
                    return 0;
@@ -136,16 +137,19 @@ int setThrottle(int i) {
   return i;
 }
 
-// set PWM steering value
+// braking
 int braking(int i) {
+  printf("braking 2");
   // limit PWM min/max values to avoid breaking the servo (120/180).
   if (i > 150) {
+    printf("braking 3");
     i = 100; // set to 1 ms for braking
   } else {
+    printf("braking 4");
     i = 150; // reset to 1,5 ms
   }
   printf("Braking, set value to: %d\n", i);
-  bcm2835_pwm_set_data(0, i);
+  bcm2835_pwm_set_data(1, i);
   return i;
 }
 
